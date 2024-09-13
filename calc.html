@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: #3B4664;
+            width: 100vw;
+            height: 100vh;
+
+        }
+
+        #box1 {
+            position: relative;
+            background: #181F32;
+            width: 480px;
+            height: 140px;
+            border-radius: 12px;
+            top: 100px;
+            left: 500px;
+            /* font-family: Segoe UI;
+            font-size: 55px;
+            font-weight: 700;
+            line-height: 73.15px;
+            text-align: right; */
+
+        }
+
+        #box2 {
+            position: relative;
+            width: 480px;
+            height: 400px;
+            top: 130px;
+            left: 500px;
+            background: #252D44;
+            border-radius: 12px;
+
+        }
+
+        .griddClass {
+            position: relative;
+            top: 45px;
+            left: 30px;
+            display: grid;
+            grid-template-rows: repeat(5, 50px);
+            grid-template-columns: repeat(4, 80px);
+            grid-gap: 12px;
+            padding-left: 30px;
+        }
+
+        .griditem {
+            background: #EAE3DB;
+            /* width: 70px;
+            height: 40px; */
+            border: 2.22px solid black;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: center;
+        }
+
+        .griditem:nth-last-child(2) {
+            color: white;
+            background: #647299;
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+        .griditem:last-child {
+            color: white;
+            background: #D13F30;
+            grid-column-start: 3;
+            grid-column-end: 5;
+
+        }
+
+        .griditem:nth-child(4) {
+            background: #647299;
+            color: white;
+        }
+
+        .calcheading {
+            position: relative;
+            color: white;
+            font-family: Inter;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 33.89px;
+            width: 58px;
+            height: 20px;
+            top: 80px;
+            left: 500px;
+            gap: 0px;
+            opacity: 0px;
+
+        }
+
+        #screen {
+            background: #181F32;
+            width: 480px;
+            height: 140px;
+            border-radius: 12px;
+            top: 100px;
+            left: 500px;
+            font-family: Segoe UI;
+            font-size: 55px;
+            font-weight: 700;
+            line-height: 73.15px;
+            text-align: right;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+
+        <text class="calcheading">
+            calc
+        </text>
+
+        <div id="box1">
+            <input id="screen" type="text" disabled>
+        </div>
+
+        <div id="box2">
+            <div class="griddClass">
+                <div class="griditem" id="gridItem-1">7</div>
+                <div class="griditem" id="gridItem-2">8</div>
+                <div class="griditem" id="gridItem-3">9</div>
+                <div class="griditem" id="gridItem-4">DEL</div>
+                <div class="griditem" id="gridItem-5">4</div>
+                <div class="griditem" id="gridItem-6">5</div>
+                <div class="griditem" id="gridItem-7">6</div>
+                <div class="griditem" id="gridItem-8">+</div>
+                <div class="griditem" id="gridItem-9">1</div>
+                <div class="griditem" id="gridItem-10">2</div>
+                <div class="griditem" id="gridItem-11">3</div>
+                <div class="griditem" id="gridItem-12">-</div>
+                <div class="griditem" id="gridItem-13">.</div>
+                <div class="griditem" id="gridItem-14">0</div>
+                <div class="griditem" id="gridItem-15">/</div>
+                <div class="griditem" id="gridItem-16">*</div>
+                <div class="griditem" id="gridItem-17">RESET</div>
+                <div class="griditem" id="gridItem-18">=</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('screen')
+        const btns = document.querySelectorAll(".griditem");
+
+        let currentInput = '';
+        let operator = '';
+        let firstValue = '';
+        let secondValue = '';
+
+        btns.forEach(button => {
+            button.addEventListener("click", function () {
+                const btnContent = button.textContent;
+
+                if (!isNaN(btnContent)) {
+                    currentInput += btnContent;
+                    display.value = currentInput;
+                } else if (btnContent === 'DEL') {
+                    currentInput = currentInput.slice(0, -1);
+                    display.value = currentInput;
+                } else if (btnContent === 'RESET') {
+                    currentInput = '';
+                    display.value = currentInput;
+                } else if (btnContent === '.' || btnContent === '+' || btnContent === '-' || btnContent === '*' || btnContent === '/') {
+                    if (!isNaN(currentInput[currentInput.length - 1])) {
+                        currentInput += btnContent;
+                        display.value = currentInput;
+                    }else if(btnContent === '+' || btnContent === '-' ){
+                        currentInput += btnContent;
+                        display.value = currentInput;
+                    }
+                     else {
+                        display.value = currentInput;
+                    }
+                } else if (btnContent === '=') {
+                    try {
+                        currentInput = eval(currentInput).toString();
+                        display.value=currentInput;
+                    } catch (error) {
+                        display.textContent = 'Error';
+                    }
+                } 
+            })
+        })
+
+    </script>
+</body>
+
+</html>
